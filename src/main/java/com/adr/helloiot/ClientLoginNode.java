@@ -569,6 +569,8 @@ public class ClientLoginNode {
                 createSamplesButton("samples.chart", IconBuilder.create(FontAwesome.FA_BAR_CHART, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/chart"),
                 createSamplesButton("samples.numbers", IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/numbers"),
                 createSamplesButton("samples.scenes", IconBuilder.create(FontAwesome.FA_PICTURE_O, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/scenes"));
+        menubutton.getItems().addAll(
+                createSamplesButton("samples.lights", IconBuilder.create(FontAwesome.FA_PAPERCLIP, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/demo"));
     }
 
     public Node getNode() {

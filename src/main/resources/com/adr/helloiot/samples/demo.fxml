@@ -1,0 +1,90 @@
+
+<Light fx:id="espurna01" topic="espurna01/relay/0" topicPublish="espurna01/relay/0/set">
+    <properties name="espurna01" label="Espurna 01" tags="hall lamp armedoff"/>
+</Light>        
+<Light fx:id="espurna03" topic="espurna03/relay/0" topicPublish="espurna03/relay/0/set">
+    <properties name="espurna03" label="Espurna 03" tags="hall lamp armedoff"/>
+</Light> 
+<Light fx:id="espurna04" topic="espurna04/relay/0" topicPublish="espurna04/relay/0/set">
+    <properties name="espurna04" label="Espurna 04" tags="hall lamp armedoff"/>
+</Light> 
+<Light fx:id="espurna05" topic="espurna05/relay/0" topicPublish="espurna05/relay/0/set">
+    <properties name="espurna05" label="Espurna 05" tags="hall lamp armedoff"/>
+</Light> 
+<DeviceNumber fx:id="espurna05dimmer" topic="espurna05/brightness" topicPublish="espurna05/brightness/set" levelMin="0" levelMax="255.0">
+</DeviceNumber> 
+
+<Thermostat fx:id="temperature" topic="espurna04/temperature">
+    <properties label="Temperatura"/>
+</Thermostat>
+<DeviceNumber fx:id="humidity" topic="espurna04/humidity" levelMin="0" levelMax="100.0" increment="1" format="DECIMAL/0.00">
+    <properties label="Humedad"/>
+</DeviceNumber>
+
+<TransmitterSimple fx:id="securityactions" topic="securityevents/security/action"/>
+
+
+<LabelSection UnitPage.layout="StartLine" text="Luces del salón"/> 
+<ButtonSimple UnitPage.layout="StartLine" device="$espurna01"/>
+
+<ButtonScript label="Temporizador">
+    <graphic><Icon iconAwesome="FA_CIRCLE" size="48" color="WHITE" shine="WHITE"/></graphic>
+    <scriptCode>
+        _device('lights').sendMessage('name/espurna01/ontimer', '5000');
+    </scriptCode>
+</ButtonScript>      
+
+<ButtonSimple UnitPage.layout="StartLine" device="$espurna03"/>    
+<ButtonScript label="Temporizador">
+    <graphic><Icon iconAwesome="FA_CIRCLE" size="48" color="WHITE" shine="WHITE"/></graphic>
+    <scriptCode>
+        _device('lights').sendMessage('name/espurna03/ontimer', '5000');
+    </scriptCode>
+</ButtonScript>  
+    
+<ButtonSimple  UnitPage.layout="StartLine" device="$espurna04"/>   
+
+<ControlIntensity deviceOn="$espurna05" deviceDim="$espurna05dimmer">
+    
+</ControlIntensity>
+     
+<ButtonScript UnitPage.layout="StartLine" label="Encender el salón">
+    <graphic><Icon iconAwesome="FA_BOLT" size="48" color="LIME" shine="WHITE"/></graphic>
+    <parameters newstatus="1"/>
+    <scriptCode>
+            _device('lights').sendMessage('tagged/hall/status', newstatus);
+    </scriptCode>
+</ButtonScript>
+<ButtonScript label="Apagar el salón" confirm="true">
+    <graphic><Icon iconAwesome="FA_BOLT" size="48" color="RED" shine="WHITE"/></graphic>
+    <parameters newstatus="0"/>
+    <scriptCode>
+            _device('lights').sendMessage('tagged/hall/status', newstatus);
+    </scriptCode>
+</ButtonScript> 
+
+<LabelSection UnitPage.layout="StartLine" text="Sensores"/> 
+<ViewGauge UnitPage.layout="StartLine" device="$temperature" type="DASHBOARD"/>
+<ViewGauge device="$humidity" type="LINEAR"/>
+
+
+<LabelSection UnitPage.layout="StartLine" text="Control alarma"/> 
+<ButtonScript UnitPage.layout="StartLine" label="Activar alarma" securityKey="mainsecuritykey">
+    <graphic><Icon iconAwesome="FA_SIGN_OUT" size="48" color="WHITE" shine="WHITE"/></graphic>
+    <scriptCode>
+        _device('security').sendStatus('ARMING');
+    </scriptCode>
+</ButtonScript> 
+
+<ButtonPassword label="Cambiar clave de alarma" securityKey="mainsecuritykey">
+    <graphic><Icon iconAwesome="FA_KEY" size="48" color="WHITE" shine="WHITE"/></graphic>
+</ButtonPassword>
+
+<ButtonSend UnitPage.page="Desactivar alarma" 
+            UnitPage.layout="StartLine" 
+            text="Desactivar alarma" 
+            securityKey="mainsecuritykey" 
+            device="$securityactions"
+            message="DISARMED">
+    <graphic><Icon iconAwesome="FA_SIGN_IN" size="48" color="WHITE" shine="WHITE"/></graphic>
+</ButtonSend>
